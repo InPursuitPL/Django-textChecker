@@ -6,6 +6,9 @@ class StringTextForm(forms.ModelForm):
         model = StringText
         fields = ('text',)
 
+# class StringTextForm(forms.Form):
+#     text = forms.CharField()
+
 class UploadFileForm(forms.Form):
     file = forms.FileField()
 
