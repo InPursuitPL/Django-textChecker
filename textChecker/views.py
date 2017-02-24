@@ -7,9 +7,8 @@ def choice(request):
     return render(request, 'textChecker/choice.html')
 
 def file_input(request):
-    #if len(request.FILES) > 0:
     if request.method == 'POST':
-        form = UploadFileForm(request.POST)
+        form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             result = gives_file_text(request.FILES['file'])
             if result == 'Wrong file format!':
@@ -20,11 +19,14 @@ def file_input(request):
                                'error': 'Zły format pliku, spróbuj ponownie'})
             finalResult = CheckedText(result)
             return render(request, 'textChecker/text_output.html',{'result': finalResult})
-
+            #return HttpResponseRedirect('text_output/', finalResult)
 
     form = UploadFileForm()
     return render(request, 'textChecker/input.html', {'form': form})
 
+# def text_output(request, result):
+#     if request.method == 'GET':
+#         return render(request, 'textChecker/text_output.html', {'result': result})
 
 def text_input(request):
     if request.method == "POST":
