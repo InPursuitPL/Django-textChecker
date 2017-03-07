@@ -4,3 +4,4 @@ myvenv
 .DS_Store
 howto.docx
 .idea
+db.sqlite3
