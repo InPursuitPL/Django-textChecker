@@ -99,22 +99,14 @@ class CheckedText:
     
     def checks_incorrect_words(self, string):
         """Checks if in text were used incorrect words."""
-        wrongWordsList = ['wziąść', 'szłem', 'szłam', 'szłeś', 'szłaś', 'poszłem',
-                          'poszłam', 'poszłeś', 'poszłaś', 'włoncza', 'włonczy',
-                          'włancza', 'swetr', 'adres zamieszkania', 'w cudzysłowiu',
-                          'orginalny', 'orginalna', 'orginalne', 'łabądź', 'skond',
-                          'z kąd', 'z tamtąd', 'wogóle', 'wogule', 'z przed',
-                          'z nad', 'po środku', 'spowrotem', 'z resztą', 'napewno',
-                          'narazie', 'odrazu', 'poprostu', 'conajmniej',
-                          'na codzień', 'wszechczasów', 'nie prawda', 'na przeciwko',
-                          'okres czasu', 'oresie czasu', 'na wskutek',
-                          'na dzień dzisiejszy', 'w każdym bądź razie', 'wg.', 'nr.',
-                          'mgr.', 'dr.', 'm. in.', 'P.S.', 'PS.', 'w/w ', 'w.w.',
-                          'mimo, że', 'mimo, iż', 'm.n.p.m.', 'za wyjątkiem',
-                          'pod rząd', 'tylni', 'tylnia', 'tylnie', 'to co',
-                          'poddać w wątpliwość', 'pomarańcz', 'rożno', 'niewiem',
-                          'na prawdę', 'nie często', 'poprostu', 'z dużej litery',
-                          'pojedyńczy', 'zwierze']
+        # Creating list of incorrect words from an external file.
+        wordsFile = open('incorrectWords.txt')
+        wordsList = wordsFile.readlines()
+        wrongWordsList = []
+        for word in wordsList:
+            if word.endswith('\n'):
+                word = word[:-1]
+            wrongWordsList.append(word)
         result = []
         for word in wrongWordsList:
             if word in string:

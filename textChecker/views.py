@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .forms import StringTextForm, UploadFileForm
 from .textChecker import CheckedText, gives_file_text
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 
 def choice(request):
     return render(request, 'textChecker/choice.html')
@@ -38,3 +38,14 @@ def text_input(request):
     form = StringTextForm()
     return render(request, 'textChecker/input.html', {'form': form})
 
+def add_wrong_words(request):
+    user_bad_words = request.user.personaldata.bad_words
+    wordsFile = open('incorrectWords.txt')
+    wordsList = wordsFile.readlines()
+    wrongWordsList = []
+    for word in wordsList:
+        if word.endswith('\n'):
+            word = word[:-1]
+        wrongWordsList.append(word)
+    return render (request, 'textChecker/add_wrong_words.html',
+                   {'user_bad_words': user_bad_words, 'bad_words': wrongWordsList})
