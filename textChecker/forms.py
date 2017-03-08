@@ -10,3 +10,5 @@ class StringTextForm(forms.ModelForm):
 class UploadFileForm(forms.Form):
     file = forms.FileField()
 
+class AddWrongWordForm(forms.Form):
+    word = forms.CharField()

@@ -11,4 +11,4 @@ class StringText(models.Model):
 
 class PersonalData(models.Model):
     user = models.OneToOneField(User)
-    bad_words = models.TextField()
+    wrong_words = models.TextField()

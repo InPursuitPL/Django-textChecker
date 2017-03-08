@@ -6,6 +6,17 @@ import re
 import docx
 import PyPDF2
 
+def creates_wrong_words_list(filePath):
+    wrongWordsList = []
+    wordsFile = open(filePath)
+    wordsList = wordsFile.readlines()
+    for word in wordsList:
+        if word.endswith('\n'):
+            word = word[:-1]
+        wrongWordsList.append(word)
+    return wrongWordsList
+
+
 def gives_file_text(fileObj):
     if str(fileObj).lower().endswith('.txt'):
         return str(fileObj.read())
@@ -32,8 +43,9 @@ def gives_file_text(fileObj):
 
 
 class CheckedText:
-    def __init__(self, string):
+    def __init__(self, string, optional_wrong_words=''):
         self.text = string
+        self.user_wrong_words = optional_wrong_words
         self.lowercase_after_dot_wrong = self.checks_lowercase_after_dot(string)[0]
         self.lowercase_after_dot_probably_wrong = self.checks_lowercase_after_dot(string)[1]
         self.repeated_words = self.checks_repeated_words(string)
@@ -45,7 +57,8 @@ class CheckedText:
         """Checks for lowercase letters after dot in string."""
         exceptFileList = ['np.', 'Np.', 'etc.', 'zob.',
                           'br.','ryc.', 'dot.', 'woj.',
-                          'r.', 'tzw.','prof.', 'dz.']
+                          'r.', 'tzw.','prof.', 'dz.',
+                          'pow.', 'gm.']
 
         dotLetterRegex = re.compile(r'(\w+\.)\s(\w+)')
         result = dotLetterRegex.findall(string)
@@ -99,14 +112,12 @@ class CheckedText:
     
     def checks_incorrect_words(self, string):
         """Checks if in text were used incorrect words."""
-        # Creating list of incorrect words from an external file.
-        wordsFile = open('incorrectWords.txt')
-        wordsList = wordsFile.readlines()
-        wrongWordsList = []
-        for word in wordsList:
-            if word.endswith('\n'):
-                word = word[:-1]
-            wrongWordsList.append(word)
+        # Creating list of wrong words from an external file
+        # with usage of external function.
+        wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
+        if len(self.user_wrong_words) > 0:
+            for word in self.user_wrong_words.split('\n'):
+                wrongWordsList.append(word)
         result = []
         for word in wrongWordsList:
             if word in string:

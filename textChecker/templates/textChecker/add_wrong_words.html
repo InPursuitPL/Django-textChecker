@@ -1,5 +1,15 @@
-<p><strong>Lista dodanych przez Ciebie s³ów/wyra¿eñ do sprawdzenia: </strong></p>
-{{bad_words}}
 
-<p><strong>Lista dodanych przez Ciebie s³ów/wyra¿eñ do sprawdzenia: </strong></p>
-{{user_bad_words}}
+<p><strong>Lista podstawowa: </strong></p>
+{{wrong_words}}
+
+<p><strong>Dodane przez Ciebie: </strong></p>
+{{user_wrong_words}}
+
+<p><strong>Dodaj element: </strong></p>
+<form method="POST" class="post-form" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p }}
+			<button type="submit" class="save btn btn-default" >Dodaj element</button>
+    </form>
+<p></p>
+<button type="button"><a href="/">Cofnij</a></button>
