@@ -1,7 +1,10 @@
 from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .forms import StringTextForm, UploadFileForm, AddWrongWordForm
+from .forms import StringTextForm, UploadFileForm, AddWrongWordForm, RegistrationForm
 from .textChecker import CheckedText, gives_file_text, creates_wrong_words_list
 from .models import PersonalData
 
@@ -62,3 +65,17 @@ def add_wrong_words(request):
                    {'user_wrong_words': user_wrong_words,
                     'wrong_words': wrongWordsList,
                     'form': form})
+
+def register_page(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            User.objects.create_user(username=form.cleaned_data['username'],
+                                        password=form.cleaned_data['password1'],
+                                        email=form.cleaned_data['email'])
+            return HttpResponseRedirect('/')
+        else:
+            HttpResponse('Error!!!')
+    form = RegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
