@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .forms import StringTextForm, UploadFileForm, AddWrongWordForm, RegistrationForm
+from .forms import StringTextForm, UploadFileForm, WrongWordForm, RegistrationForm
 from .textChecker import CheckedText, gives_file_text, creates_wrong_words_list
 from .models import PersonalData
 
@@ -46,25 +46,56 @@ def text_input(request):
     return render(request, 'textChecker/input.html', {'form': form})
 
 @login_required
+def wrong_words(request):
+    user_wrong_words = request.user.personaldata.wrong_words
+    # Using external function from textChecker module.
+    wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
+    return render(request, 'textChecker/wrong_words.html',
+                  {'user_wrong_words': user_wrong_words,
+                   'wrong_words': wrongWordsList})
+
+@login_required
 def add_wrong_words(request):
     if request.method == "POST":
-        form = AddWrongWordForm(request.POST)
+        form = WrongWordForm(request.POST)
         if form.is_valid():
             wordToAdd = request.POST['word']
             obj = PersonalData.objects.get(user=request.user)
             obj.wrong_words += '\n' + wordToAdd.strip()
             obj.save()
             result = request.user.personaldata.wrong_words
-            return render(request, 'textChecker/wrong_words_added.html',
+            return render(request, 'textChecker/wrong_words_changed.html',
                           {'result': result})
     user_wrong_words = request.user.personaldata.wrong_words
     # Using external function from textChecker module.
     wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
-    form = AddWrongWordForm()
+    form = WrongWordForm()
     return render(request, 'textChecker/add_wrong_words.html',
                    {'user_wrong_words': user_wrong_words,
                     'wrong_words': wrongWordsList,
                     'form': form})
+@login_required
+def rem_wrong_words(request):
+    if request.method == "POST":
+        form = WrongWordForm(request.POST)
+        if form.is_valid():
+            wordToRem = request.POST['word']
+            obj = PersonalData.objects.get(user=request.user)
+            if wordToRem in obj.wrong_words:
+                obj.wrong_words = obj.wrong_words.replace('\n'+wordToRem, '')
+                obj.save()
+            result = request.user.personaldata.wrong_words
+            return render(request, 'textChecker/wrong_words_changed.html',
+                          {'result': result})
+
+    user_wrong_words = request.user.personaldata.wrong_words
+    # Using external function from textChecker module.
+    wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
+    form = WrongWordForm()
+    return render(request, 'textChecker/rem_wrong_words.html',
+                  {'user_wrong_words': user_wrong_words,
+                   'wrong_words': wrongWordsList,
+                   'form': form})
 
 def register_page(request):
     if request.method == 'POST':
@@ -73,9 +104,10 @@ def register_page(request):
             User.objects.create_user(username=form.cleaned_data['username'],
                                         password=form.cleaned_data['password1'],
                                         email=form.cleaned_data['email'])
-            return HttpResponseRedirect('/')
+            return render(request, 'registration/register_success.html',
+                          {'user': form.cleaned_data['username']})
         else:
-            HttpResponse('Error!!!')
+            return render(request, 'registration/register.html', {'form': form})
     form = RegistrationForm()
     return render(request, 'registration/register.html', {'form': form})
 

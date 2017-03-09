@@ -18,7 +18,7 @@ class UploadFileForm(forms.Form):
 
 
 
-class AddWrongWordForm(forms.Form):
+class WrongWordForm(forms.Form):
     word = forms.CharField()
 
 
