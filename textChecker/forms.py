@@ -4,30 +4,26 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
-from .models import StringText
 
-
-class StringTextForm(forms.ModelForm):
-    class Meta:
-        model = StringText
-        fields = ('text',)
+class StringTextForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea, label='Tekst')
 
 
 class UploadFileForm(forms.Form):
-    file = forms.FileField()
+    file = forms.FileField(label='Plik')
 
 
 
 class WrongWordForm(forms.Form):
-    word = forms.CharField()
+    word = forms.CharField(label='Słowo lub wyrażenie')
 
 
 class RegistrationForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=30)
+    username = forms.CharField(label='Nazwa użytkownika', max_length=30)
     email = forms.EmailField(label='Email')
-    password1 = forms.CharField(label='Password',
+    password1 = forms.CharField(label='Hasło',
                           widget=forms.PasswordInput())
-    password2 = forms.CharField(label='Password (Again)',
+    password2 = forms.CharField(label='Hasło (ponownie)',
                         widget=forms.PasswordInput())
 
     def clean_password2(self):
@@ -36,15 +32,15 @@ class RegistrationForm(forms.Form):
             password2 = self.cleaned_data['password2']
             if password1 == password2:
                 return password2
-        raise forms.ValidationError('Passwords do not match.')
+        raise forms.ValidationError('Hasła nie były te same.')
 
     def clean_username(self):
         username = self.cleaned_data['username']
         if not re.search(r'^\w+$', username):
-            raise forms.ValidationError('Username can only contain '
-            'alphanumeric characters and the underscore.')
+            raise forms.ValidationError('Nazwa użytkownika może zawierać tylko'
+                                        'litery oraz znak podkreślenia.')
         try:
             User.objects.get(username=username)
         except ObjectDoesNotExist:
             return username
-        raise forms.ValidationError('Username is already taken.', code='invalid')
+        raise forms.ValidationError('Nazwa użytkownika jest już zajęta.', code='invalid')

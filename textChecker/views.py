@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -10,9 +9,14 @@ from .models import PersonalData
 
 
 def choice(request):
+    """
+    Display main page with choices of login/registration and choices
+    how to provide data to the program.
+    """
     return render(request, 'textChecker/choice.html')
 
 def file_input(request):
+    """Display page with form to upload a file in txt/docx/pdf format."""
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -30,16 +34,16 @@ def file_input(request):
     return render(request, 'textChecker/input.html', {'form': form})
 
 def text_input(request):
+    """Display page with form to upload a text."""
     if request.method == "POST":
         form = StringTextForm(request.POST)
         if form.is_valid():
-            stringText = form.save(commit=False)
-            stringText.save()
+            stringText = request.POST['text']
             if not request.user.is_anonymous():
                 user_wrong_words = request.user.personaldata.wrong_words
-                result = CheckedText(stringText.text, user_wrong_words)
+                result = CheckedText(stringText, user_wrong_words)
             else:
-                result = CheckedText(stringText.text)
+                result = CheckedText(stringText)
             return render(request, 'textChecker/text_output.html',
                           {'result': result})
     form = StringTextForm()
@@ -47,6 +51,10 @@ def text_input(request):
 
 @login_required
 def wrong_words(request):
+    """
+    Display incorrect elements to search and choices if user wants to
+    add or remove elements from his personal list.
+    """
     user_wrong_words = request.user.personaldata.wrong_words
     # Using external function from textChecker module.
     wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
@@ -56,6 +64,7 @@ def wrong_words(request):
 
 @login_required
 def add_wrong_words(request):
+    """Display possibility to add elements to user's wrong words list."""
     if request.method == "POST":
         form = WrongWordForm(request.POST)
         if form.is_valid():
@@ -76,6 +85,7 @@ def add_wrong_words(request):
                     'form': form})
 @login_required
 def rem_wrong_words(request):
+    """Display possibility to remove elements from user's wrong words list."""
     if request.method == "POST":
         form = WrongWordForm(request.POST)
         if form.is_valid():
@@ -98,6 +108,7 @@ def rem_wrong_words(request):
                    'form': form})
 
 def register_page(request):
+    """Page for new user registration."""
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():

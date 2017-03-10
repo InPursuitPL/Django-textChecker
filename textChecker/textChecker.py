@@ -1,12 +1,11 @@
 #! python3
 
-import os
-import time
 import re
 import docx
 import PyPDF2
 
 def creates_wrong_words_list(filePath):
+    """Transfers .txt source with each element in newline to a list."""
     wrongWordsList = []
     wordsFile = open(filePath)
     wordsList = wordsFile.readlines()
@@ -18,17 +17,18 @@ def creates_wrong_words_list(filePath):
 
 
 def gives_file_text(fileObj):
+    """Returns string created from text stored in txt/docx/pdf file.
+    If given different file type, returns 'Wrong file format!'"""
     if str(fileObj).lower().endswith('.txt'):
         return str(fileObj.read())
-
     elif str(fileObj).lower().endswith('.docx'):
         doc = docx.Document(fileObj)
         fullText = []
+        fileString = ''
         for para in doc.paragraphs:
             fullText.append(para.text)
             fileString = '\n'.join(fullText)
         return fileString
-
     elif str(fileObj).lower().endswith('.pdf'):
         pdfReader = PyPDF2.PdfFileReader(fileObj)
         fullText = []
@@ -37,12 +37,12 @@ def gives_file_text(fileObj):
             fullText.append(pageObj.extractText())
         fileString = '\n'.join(fullText)
         return fileString
-    
     else:
         return 'Wrong file format!'
 
 
 class CheckedText:
+    """Handles analyzing text, it can add optional wrong words to check."""
     def __init__(self, string, optional_wrong_words=''):
         self.text = string
         self.user_wrong_words = optional_wrong_words
@@ -55,23 +55,21 @@ class CheckedText:
 
     def checks_lowercase_after_dot(self, string):    
         """Checks for lowercase letters after dot in string."""
-        exceptFileList = ['np.', 'Np.', 'etc.', 'zob.',
-                          'br.','ryc.', 'dot.', 'woj.',
-                          'r.', 'tzw.','prof.', 'dz.',
-                          'pow.', 'gm.']
+        # Loads exception words that can create dot inside sentence
+        # from an external file.
+        exceptFile = open('dotInsideSentence.txt')
+        exceptFileString = exceptFile.read()
+        exceptFileList = exceptFileString.split()
 
         dotLetterRegex = re.compile(r'(\w+\.)\s(\w+)')
         result = dotLetterRegex.findall(string)
-
         probablyWrong = []
         wrong = []
-
         for answerTuple in result:
             if answerTuple[1][0].islower() and answerTuple[0] in exceptFileList:
                 probablyWrong.append(answerTuple)
             if answerTuple[1][0].islower() and answerTuple[0] not in exceptFileList:
                 wrong.append(answerTuple)
-
         finalResult = []
         finalResult.append(wrong)
         finalResult.append(probablyWrong)
@@ -84,20 +82,15 @@ class CheckedText:
 
         result = []
         for answerTuple in oddWordsPairs:
-
             # This checks only pairs of every odd word in text with next one,
             # as the result file looks like this:
             # [('this', 'checks'), ('only', 'pairs'), ('in', 'tuples')]
-
             if answerTuple[0] == answerTuple[1]:
                 result.append(answerTuple)
-
             # This checks also every even word in text with next one.
             # So it checks (see last example) 'checks' with 'only',
             # 'pairs' with 'in' untill the last tuple in list.
-
             index = oddWordsPairs.index(answerTuple)
-
             # This condition to stop "out of range" error at the end of the list.
             if oddWordsPairs.index(answerTuple) != len(oddWordsPairs) - 1:
                 if answerTuple[1] == oddWordsPairs[index + 1][0]:
@@ -126,7 +119,11 @@ class CheckedText:
     
     def checks_missing_comma(self, string):
         """Checks if there is no missing coma before certain words."""
-        commaWordsList = ['że', 'ale', 'lecz', 'zatem', 'toteż', 'więc']
+        # Creating list of words that should have comma and space before them
+        # from an external file.
+        wordsFile = open('missingComma.txt')
+        wordsString = wordsFile.read()
+        commaWordsList = wordsString.split()
         result = []
         for word in commaWordsList:
             commaRegex = re.compile(r'[^ ,]+ ' + word + ' ')
