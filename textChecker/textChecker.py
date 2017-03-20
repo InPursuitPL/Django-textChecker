@@ -4,16 +4,16 @@ import re
 import docx
 import PyPDF2
 
-def creates_wrong_words_list(filePath):
+def creates_words_list(filePath):
     """Transfers .txt source with each element in newline to a list."""
-    wrongWordsList = []
+    newWordsList = []
     wordsFile = open(filePath)
     wordsList = wordsFile.readlines()
     for word in wordsList:
         if word.endswith('\n'):
             word = word[:-1]
-        wrongWordsList.append(word)
-    return wrongWordsList
+        newWordsList.append(word)
+    return newWordsList
 
 
 def gives_file_text(fileObj):
@@ -107,7 +107,7 @@ class CheckedText:
         """Checks if in text were used incorrect words."""
         # Creating list of wrong words from an external file
         # with usage of external function.
-        wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
+        wrongWordsList = creates_words_list('incorrectWords.txt')
         if len(self.user_wrong_words) > 0:
             for word in self.user_wrong_words.split('\n'):
                 wrongWordsList.append(word)

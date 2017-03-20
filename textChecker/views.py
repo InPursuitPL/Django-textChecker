@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .forms import StringTextForm, UploadFileForm, RegistrationForm, AddDeleteForm
-from .textChecker import CheckedText, gives_file_text, creates_wrong_words_list
+from .textChecker import CheckedText, gives_file_text, creates_words_list
 from .models import PersonalData
 
 
@@ -82,7 +82,7 @@ def wrong_words(request):
 
     user_wrong_words = request.user.personaldata.wrong_words
     # Using external function from textChecker module.
-    wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
+    wrongWordsList = creates_words_list('incorrectWords.txt')
     form = AddDeleteForm()
     return render(request, 'textChecker/wrong_words.html',
                   {'user_wrong_words': user_wrong_words,
