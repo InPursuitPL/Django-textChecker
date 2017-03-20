@@ -1,33 +1,36 @@
-<h3>Wynik:</h3>
+{% extends 'textChecker/base.html' %}
+{% block content %}
+	<h3>Wynik:</h3>
 
-<p><strong>Przypadki małej litery po kropce (wyniki pewne):</strong></p>
-{% for result in result.lowercase_after_dot_wrong %}
-	<p>{{result}}</p>
-{% endfor %}
+	<p><strong>Przypadki małej litery po kropce (wyniki pewne):</strong></p>
+	{% for result in result.lowercase_after_dot_wrong %}
+		<p>{{result}}</p>
+	{% endfor %}
 
-<p><strong>Przypadki małej litery po kropce (wyniki prawdopodobnie poprawne):</strong></p>
-{% for result in result.lowercase_after_dot_probably_wrong %}
-	<p>{{result}}</p>
-{% endfor %}
+	<p><strong>Przypadki małej litery po kropce (wyniki prawdopodobnie poprawne):</strong></p>
+	{% for result in result.lowercase_after_dot_probably_wrong %}
+		<p>{{result}}</p>
+	{% endfor %}
 
-<p><strong>Przypadki powtórzonych wyrazów:</strong></p>
-{% for result in result.repeated_words %}
-	<p>{{result}}</p>
-{% endfor %}
+	<p><strong>Przypadki powtórzonych wyrazów:</strong></p>
+	{% for result in result.repeated_words %}
+		<p>{{result}}</p>
+	{% endfor %}
 
-<p><strong>Przypadki wielokrotnych spacji:</strong></p>
-{% for result in result.multiple_spaces %}
-	<p>{{result}}</p>
-{% endfor %}
+	<p><strong>Przypadki wielokrotnych spacji:</strong></p>
+	{% for result in result.multiple_spaces %}
+		<p>{{result}}</p>
+	{% endfor %}
 
-<p><strong>Przypadki błędnych słów i wyrażeń:</strong></p>
-{% for result in result.incorrect_words %}
-	<p>{{result}}</p>
-{% endfor %}
+	<p><strong>Przypadki błędnych słów i wyrażeń:</strong></p>
+	{% for result in result.incorrect_words %}
+		<p>{{result}}</p>
+	{% endfor %}
 
-<p><strong>Przypadki brakujących przecinków:</strong></p>
-{% for result in result.missing_comma %}
-	<p>{{result}}</p>
-{% endfor %}
+	<p><strong>Przypadki brakujących przecinków:</strong></p>
+	{% for result in result.missing_comma %}
+		<p>{{result}}</p>
+	{% endfor %}
 
-<button type="button"><a href="/">Wróć do strony głównej</a></button>
+	<button type="button"><a href="/">Wróć do strony głównej</a></button>
+{% endblock content %}

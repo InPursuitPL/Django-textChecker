@@ -7,10 +7,12 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class AddDeleteForm(forms.Form):
     CHOICES = (
-        ('Add', 'Chciałbym dodać elementy do mojej listy'),
-        ('Delete', 'Chciałbym usunąć elementy z mojej listy'),
+        ('Add', 'Chciałbym dodać element do mojej listy'),
+        ('Delete', 'Chciałbym usunąć element z mojej listy'),
     )
-    select = forms.CharField(widget=forms.Select(choices=CHOICES))
+    select = forms.CharField(widget=forms.Select(choices=CHOICES),
+                             label='Wybierz')
+    word = forms.CharField(label='Słowo lub wyrażenie')
 
 
 class StringTextForm(forms.Form):
@@ -19,10 +21,6 @@ class StringTextForm(forms.Form):
 
 class UploadFileForm(forms.Form):
     file = forms.FileField(label='Plik')
-
-
-class WrongWordForm(forms.Form):
-    word = forms.CharField(label='Słowo lub wyrażenie')
 
 
 class RegistrationForm(forms.Form):

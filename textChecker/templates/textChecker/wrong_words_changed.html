@@ -1,6 +1,8 @@
-<p><strong>Twoje zaktualizowane elementy: </strong></p>
-{{result}}
-<p></p>
-<button type="button"><a href="/">Wróć do strony głównej</a></button>
-<button type="button"><a href="/add_wrong_words/">Dodaj element</a></button>
-<button type="button"><a href="/rem_wrong_words/">Usuń element</a></button>
+{% extends 'textChecker/base.html' %}
+{% block content %}
+	<p><strong>Twoje zaktualizowane elementy: </strong></p>
+	{{result}}
+	<p></p>
+	<button type="button"><a href="/">Wróć do strony głównej</a></button>
+	<button type="button"><a href="/wrong_words/">Dodaj lub usuń element</a></button>
+{% endblock content %}

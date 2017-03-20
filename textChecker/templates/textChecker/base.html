@@ -1,0 +1,9 @@
+{% if user.is_authenticated %}
+	<p class="top-menu">Cześć {{ user.username }} <small>(<a href="{% url 'logout' %}">Wyloguj</a>)</small></p>
+{% else %}
+	<p class="top-menu"> Zaloguj się lub zarejestruj aby personalizować listę wyszukiwanych błędnych słów i wyrażeń 
+	<small>(<a href="{% url 'login' %}">Zaloguj</a>) (<a href="{% url 'register' %}">Zarejestruj</a>)</small></p>
+{% endif %}
+<br>
+{% block content %}
+{% endblock %}
