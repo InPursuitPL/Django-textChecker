@@ -5,13 +5,20 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 
 
+class AddDeleteForm(forms.Form):
+    CHOICES = (
+        ('Add', 'Chciałbym dodać elementy do mojej listy'),
+        ('Delete', 'Chciałbym usunąć elementy z mojej listy'),
+    )
+    select = forms.CharField(widget=forms.Select(choices=CHOICES))
+
+
 class StringTextForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea, label='Tekst')
 
 
 class UploadFileForm(forms.Form):
     file = forms.FileField(label='Plik')
-
 
 
 class WrongWordForm(forms.Form):

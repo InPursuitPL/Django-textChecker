@@ -5,7 +5,11 @@
 <p><strong>Dodane przez Ciebie: </strong></p>
 {{user_wrong_words}}
 <br>
-<a href="{% url 'add_wrong_words' %}"><br>Chciałbym dodać elementy do mojej listy<br></a>
-<a href="{% url 'rem_wrong_words' %}"><br>Chciałbym usunąć elementy z mojej listy<br></a>
+<form method="POST" class="post-form">
+		{% csrf_token %}
+		{{ form.as_p }}
+			<button type="submit" class="save btn btn-default" >Zaladuj</button>
+    </form>
+	{{choice}}
 <br>
 <button type="button"><a href="/">Wróć do strony głównej</a></button>

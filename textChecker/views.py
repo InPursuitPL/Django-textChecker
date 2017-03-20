@@ -1,22 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .forms import StringTextForm, UploadFileForm, WrongWordForm, RegistrationForm
+from .forms import StringTextForm, UploadFileForm, WrongWordForm,\
+    RegistrationForm, AddDeleteForm
 from .textChecker import CheckedText, gives_file_text, creates_wrong_words_list
 from .models import PersonalData
 
 
 def choice(request):
     """
-    Display main page with choices of login/registration and choices
+    Displays main page with choices of login/registration and choices
     how to provide data to the program.
     """
     return render(request, 'textChecker/choice.html')
 
 def file_input(request):
-    """Display page with form to upload a file in txt/docx/pdf format."""
+    """Displays page with form to upload a file in txt/docx/pdf format."""
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -27,14 +28,18 @@ def file_input(request):
                               'textChecker/input.html',
                               {'form': form,
                                'error': 'Zły format pliku, spróbuj ponownie'})
-            finalResult = CheckedText(result)
+            if not request.user.is_anonymous():
+                user_wrong_words = request.user.personaldata.wrong_words
+                finalResult = CheckedText(result, user_wrong_words)
+            else:
+                finalResult = CheckedText(result)
             return render(request, 'textChecker/text_output.html',
                           {'result': finalResult})
     form = UploadFileForm()
     return render(request, 'textChecker/input.html', {'form': form})
 
 def text_input(request):
-    """Display page with form to upload a text."""
+    """Displays page with form to upload a text."""
     if request.method == "POST":
         form = StringTextForm(request.POST)
         if form.is_valid():
@@ -52,19 +57,29 @@ def text_input(request):
 @login_required
 def wrong_words(request):
     """
-    Display incorrect elements to search and choices if user wants to
-    add or remove elements from his personal list.
+        Displays incorrect elements to search and choices if user wants to
+        add or remove elements from his personal list.
     """
+    if request.method == "POST":
+        form = AddDeleteForm(request.POST)
+        if form.is_valid():
+            choice = request.POST['select']
+            if choice == 'Add':
+                return redirect('add_wrong_words')
+            elif choice == 'Delete':
+                return redirect('rem_wrong_words')
     user_wrong_words = request.user.personaldata.wrong_words
     # Using external function from textChecker module.
     wrongWordsList = creates_wrong_words_list('incorrectWords.txt')
+    form = AddDeleteForm()
     return render(request, 'textChecker/wrong_words.html',
                   {'user_wrong_words': user_wrong_words,
-                   'wrong_words': wrongWordsList})
+                   'wrong_words': wrongWordsList,
+                   'form': form})
 
 @login_required
 def add_wrong_words(request):
-    """Display possibility to add elements to user's wrong words list."""
+    """Displays possibility to add elements to user's wrong words list."""
     if request.method == "POST":
         form = WrongWordForm(request.POST)
         if form.is_valid():
@@ -85,7 +100,7 @@ def add_wrong_words(request):
                     'form': form})
 @login_required
 def rem_wrong_words(request):
-    """Display possibility to remove elements from user's wrong words list."""
+    """Displays possibility to remove elements from user's wrong words list."""
     if request.method == "POST":
         form = WrongWordForm(request.POST)
         if form.is_valid():
