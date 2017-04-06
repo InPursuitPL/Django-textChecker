@@ -2,6 +2,6 @@
 __pycache__
 myvenv
 .DS_Store
-howto.docx
+*.docx
 .idea
 db.sqlite3
