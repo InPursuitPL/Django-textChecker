@@ -3,7 +3,7 @@ This is my textChecker app, created to learn Django framework in practice.
 App works with Polish interface, as it works on polish texts. You can paste text
 that you want to check (eg. essay) directly on a page or you can upload txt/docx/pdf 
 file. App checks mistakes in text, such as:
--small letters after the dot
+<br>-small letters after the dot
 -repeated words
 -multiple spaces
 -erroneous words and phrases
