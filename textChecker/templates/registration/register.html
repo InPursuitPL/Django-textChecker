@@ -1,10 +1,13 @@
-{% if user.is_authenticated %}
-	<p>Zalogowany użytkownik nie może dokonać rejestracji.</p>
-	<button type="button"><a href="/">Wróć do strony głównej</a></button>
-{% else %}
-	<form method="post" action=".">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Rejestruj" />
-	</form>
-{% endif %}
+{% extends 'textChecker/base.html' %}
+{% block content %}
+	{% if user.is_authenticated %}
+		<p class="errorMessage">Zalogowany użytkownik nie może dokonać rejestracji.</p>
+		<button type="button"><a href="/">Wróć do strony głównej</a></button>
+	{% else %}
+		<form method="post" action=".">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Rejestruj" />
+		</form>
+	{% endif %}
+{% endblock content %}

@@ -1,3 +1,5 @@
- <p>Zarejestrowano użytkownika {{user}}.</p>
-
-<button type="button"><a href="/">Wróć do strony głównej</a></button>
+{% extends 'textChecker/base.html' %}
+{% block content %}
+	<p>Zarejestrowano użytkownika {{user}}.</p>
+	<a href="/">Wróć do strony głównej</a>
+{% endblock content %}

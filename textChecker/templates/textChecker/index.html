@@ -1,10 +1,8 @@
 {% extends 'textChecker/base.html' %}
 {% block content %}
 	{% if user.is_authenticated %}
-		<p class="top-menu">Personalizuj listę wyszukiwanych błędnych słów i wyrażeń <small>(<a href="{% url 'wrong_words' %}">Kliknij</a>)</small></p>
+		<p>Personalizuj listę wyszukiwanych błędnych słów i wyrażeń <small>(<a href="{% url 'wrong_words' %}">Kliknij</a>)</small></p>
 	{% endif %}
-
-
 	<h3>Aplikacja sprawdzająca błędy takie jak:</h3>
 	<ul>
 	<li>małe litery po kropce</li>
@@ -14,8 +12,7 @@
 	<li>słowa z brakującymi przecinkami</li>
 	</ul>
 	<h3>Co chciałbyś zrobić:</h3>
-
 	<a href="/text_input">Wklej tekst</a>
-	<p></p>
+	<br>
 	<a href="/file_input">Załaduj plik w formacie txt/docx/pdf</a>
 {% endblock content %}

@@ -1,16 +1,20 @@
 {% extends 'textChecker/base.html' %}
 {% block content %}
 	<p><strong>Lista podstawowa: </strong></p>
-	{{wrong_words}}
-
+	<div class="wordList">
+		{{wrong_words}}
+	</div>
 	<p><strong>Dodane przez Ciebie: </strong></p>
-	{{user_wrong_words}}
+	<div class="wordList">
+		{{user_wrong_words}}
+	</div>
+	<br>
 	<br>
 	<form method="POST" class="post-form">
 			{% csrf_token %}
-			{{ form.as_p }}
+			{{ form.as_table }}
 				<button type="submit" class="save btn btn-default" >Zaladuj</button>
 		</form>
 	<br>
-	<button type="button"><a href="/">Wróć do strony głównej</a></button>
+	<a href="/">Wróć do strony głównej</a>
 {% endblock content %}

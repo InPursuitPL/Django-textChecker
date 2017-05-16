@@ -13,7 +13,7 @@ def choice(request):
     Displays main page with choices of login/registration and choices
     how to provide data to the program.
     """
-    return render(request, 'textChecker/choice.html')
+    return render(request, 'textChecker/index.html')
 
 
 def file_input(request):

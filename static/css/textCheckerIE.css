@@ -1,0 +1,45 @@
+body {
+	font-family: "courier new", helvetica, arial, serif;
+	margin: 10px;
+}
+
+a:hover {
+	color: lightblue;
+}
+
+.topMenu {
+	color: white;
+	background-color: rgb(65, 118, 144);
+	
+}
+
+.topMenu a {
+	color: lightblue;
+}
+
+.topMenu a:hover {
+	color: white;
+	font-weight: bold;
+}
+
+.errorMessage {
+	color: red;
+}
+
+.wordList {
+	border: 1px solid silver;
+	border-radius: 4px;
+	background-color: white;
+}
+
+#gitLink {
+	position: fixed;
+	top: 85%;
+	right: 1%;
+}
+
+#inPursuitLink {
+	position: fixed;
+	top: 75%;
+	right: 1%;
+}

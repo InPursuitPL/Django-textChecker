@@ -8,13 +8,13 @@
 	<li>błędne słowa i wyrażenia</li>
 	<li>słowa z brakującymi przecinkami</li>
 	</ul>
-	<h3>Wklej tekst w celu sprawdzenia błędów:</h3>
-	<p style="color:red">{{error}}</p>
-		<form method="POST" class="post-form" enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ form.as_p }}
-				<button type="submit" class="save btn btn-default" >Zaladuj</button>
-		</form>
-		
-	<button type="button"><a href="/">Wróć do strony głównej</a></button>
+	<h3>Wyślij tekst w celu sprawdzenia błędów:</h3>
+	<p class="errorMessage"><strong>{{error}}</strong></p>
+	<form method="POST" class="post-form" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="save btn btn-default" >Zaladuj</button>
+	</form>
+	<br>
+	<a href="/">Wróć do strony głównej</a>
 {% endblock content %}
