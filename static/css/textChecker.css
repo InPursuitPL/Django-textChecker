@@ -1,6 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Muli);
+
 body {
-	font-family: "courier new", helvetica, arial, serif;
+	font-family: 'Muli', sans-serif; 
+	font-weight:normal;
 	margin: 10px;
+}
+
+h3 {
+	border-bottom: 1px solid #bbb;
 }
 
 a:hover {
@@ -8,9 +15,12 @@ a:hover {
 }
 
 .topMenu {
-	color: white;
-	background-color: rgb(65, 118, 144);
-	
+	padding: 10px 100px;
+    font-size: 14px;
+    background: #12c064;
+    color: #fff;
+    border-bottom: 4px solid #1cdf78;
+    overflow: auto;	
 }
 
 .topMenu a {
@@ -47,6 +57,6 @@ a:hover {
 
 .imgLinks a:hover {
 			background: white;
-			box-shadow: 0 0 100px 50px rgba(30,144,255,.5);
+			box-shadow: 0 0 100px 50px #12c064;
 			opacity: 1;
 		}
